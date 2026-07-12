@@ -7,7 +7,7 @@ import * as allocApi from '../api/allocations.js'
 import { listAssets } from '../api/assets.js'
 import { listEmployees } from '../api/employees.js'
 
-const input = 'w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
+const input = 'w-full rounded-md border border-[#e0dedb] px-3 py-2 text-sm focus:border-[#37322f] focus:outline-none focus:ring-1 focus:ring-[#37322f]'
 const btn = 'rounded-md px-3 py-1.5 text-sm font-medium'
 const fmtDate = (d) => (d ? new Date(d).toLocaleDateString() : '—')
 const isOverdue = (a) => a.status === 'ACTIVE' && a.expectedReturnDate && new Date(a.expectedReturnDate) < new Date()
@@ -74,7 +74,7 @@ export default function Allocation() {
     ) },
     { key: 'actions', header: '', render: (r) => (
       <RoleGuard roles={['ASSET_MANAGER', 'ADMIN']}>
-        <button onClick={() => { setReturning(r); setNotes('') }} className="text-indigo-600 hover:underline">Return</button>
+        <button onClick={() => { setReturning(r); setNotes('') }} className="text-[#37322f] hover:underline">Return</button>
       </RoleGuard>
     ) },
   ]
@@ -92,12 +92,12 @@ export default function Allocation() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-slate-800">Allocation &amp; Transfer</h1>
-      <p className="mt-1 text-sm text-slate-500">Conflict-safe allocation — an asset can only be held by one holder at a time.</p>
+      <h1 className="text-2xl font-bold text-[#37322f]">Allocation &amp; Transfer</h1>
+      <p className="mt-1 text-sm text-[#847d76]">Conflict-safe allocation — an asset can only be held by one holder at a time.</p>
 
       <RoleGuard roles={['ASSET_MANAGER', 'ADMIN', 'DEPARTMENT_HEAD']}>
-        <div className="mt-5 rounded-xl bg-white p-5 ring-1 ring-slate-200">
-          <h2 className="mb-3 font-semibold text-slate-800">Allocate an asset</h2>
+        <div className="mt-5 rounded-xl bg-white p-5 ring-1 ring-[#e6e3df]">
+          <h2 className="mb-3 font-semibold text-[#37322f]">Allocate an asset</h2>
           {msg && <div className="mb-3 rounded-md bg-green-50 px-3 py-2 text-sm text-green-700">{msg}</div>}
           {conflict && (
             <div className="mb-3 flex items-center justify-between rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-800">
@@ -118,9 +118,9 @@ export default function Allocation() {
               {employees.map((u) => <option key={u.id} value={u.id}>{u.name}</option>)}
             </select>
             <input type="date" className={input} value={form.expectedReturnDate} onChange={(e) => setForm({ ...form, expectedReturnDate: e.target.value })} />
-            <button onClick={submitAllocate} disabled={!form.assetId} className={`${btn} bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50`}>Allocate</button>
+            <button onClick={submitAllocate} disabled={!form.assetId} className={`${btn} bg-[#37322f] text-white hover:bg-[#4b453f] disabled:opacity-50`}>Allocate</button>
           </div>
-          <p className="mt-2 text-xs text-slate-400">Tip: to allocate an already-held asset, use Request Transfer after selecting it.</p>
+          <p className="mt-2 text-xs text-[#a39c94]">Tip: to allocate an already-held asset, use Request Transfer after selecting it.</p>
           <select className={`${input} mt-2`} value="" onChange={(e) => setForm({ ...form, assetId: e.target.value })}>
             <option value="">…or pick any asset (incl. allocated) to transfer</option>
             {assets.map((a) => <option key={a.id} value={a.id}>{a.tag} · {a.name} ({a.status})</option>)}
@@ -129,12 +129,12 @@ export default function Allocation() {
       </RoleGuard>
 
       <div className="mt-6">
-        <h2 className="mb-2 font-semibold text-slate-800">Active allocations</h2>
+        <h2 className="mb-2 font-semibold text-[#37322f]">Active allocations</h2>
         <DataTable columns={activeCols} rows={active} empty="Nothing allocated right now." />
       </div>
 
       <div className="mt-6">
-        <h2 className="mb-2 font-semibold text-slate-800">Pending transfer requests</h2>
+        <h2 className="mb-2 font-semibold text-[#37322f]">Pending transfer requests</h2>
         <DataTable columns={transferCols} rows={transfers} empty="No transfer requests." />
       </div>
 
@@ -144,15 +144,15 @@ export default function Allocation() {
           onClose={() => setReturning(null)}
           footer={
             <>
-              <button onClick={() => setReturning(null)} className={`${btn} border border-slate-300 text-slate-600`}>Cancel</button>
-              <button onClick={doReturn} className={`${btn} bg-indigo-600 text-white`}>Confirm return</button>
+              <button onClick={() => setReturning(null)} className={`${btn} border border-[#e0dedb] text-[#605a57]`}>Cancel</button>
+              <button onClick={doReturn} className={`${btn} bg-[#37322f] text-white`}>Confirm return</button>
             </>
           }
         >
-          <p className="mb-3 text-sm text-slate-600">
+          <p className="mb-3 text-sm text-[#605a57]">
             Returning <b>{returning.asset?.tag}</b> from {returning.user?.name || 'Department'}.
           </p>
-          <label className="text-sm font-medium text-slate-600">Condition check-in notes</label>
+          <label className="text-sm font-medium text-[#605a57]">Condition check-in notes</label>
           <textarea className={`${input} mt-1`} rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="e.g. Minor scratches on lid" />
         </Modal>
       )}

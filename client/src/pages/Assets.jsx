@@ -8,7 +8,7 @@ import { listCategories } from '../api/categories.js'
 
 const ASSET_STATUSES = ['AVAILABLE', 'ALLOCATED', 'RESERVED', 'UNDER_MAINTENANCE', 'LOST', 'RETIRED', 'DISPOSED']
 const CONDITIONS = ['New', 'Good', 'Fair', 'Poor']
-const input = 'w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
+const input = 'w-full rounded-md border border-[#e0dedb] px-3 py-2 text-sm focus:border-[#37322f] focus:outline-none focus:ring-1 focus:ring-[#37322f]'
 const btn = 'rounded-md px-3 py-1.5 text-sm font-medium'
 
 const fmtDate = (d) => (d ? new Date(d).toLocaleDateString() : '—')
@@ -70,18 +70,18 @@ export default function Assets() {
     { key: 'status', header: 'Status', render: (r) => <StatusBadge status={r.status} /> },
     { key: 'location', header: 'Location', render: (r) => r.location || '—' },
     { key: 'isBookable', header: 'Bookable', render: (r) => (r.isBookable ? 'Yes' : 'No') },
-    { key: 'actions', header: '', render: (r) => <button onClick={() => openDetail(r)} className="text-indigo-600 hover:underline">View</button> },
+    { key: 'actions', header: '', render: (r) => <button onClick={() => openDetail(r)} className="text-[#37322f] hover:underline">View</button> },
   ]
 
   return (
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Assets</h1>
-          <p className="mt-1 text-sm text-slate-500">Register, search, and track the full asset lifecycle.</p>
+          <h1 className="text-2xl font-bold text-[#37322f]">Assets</h1>
+          <p className="mt-1 text-sm text-[#847d76]">Register, search, and track the full asset lifecycle.</p>
         </div>
         <RoleGuard roles={['ASSET_MANAGER', 'ADMIN']}>
-          <button onClick={() => { setForm(emptyForm); setError(''); setShowForm(true) }} className={`${btn} bg-indigo-600 text-white hover:bg-indigo-700`}>
+          <button onClick={() => { setForm(emptyForm); setError(''); setShowForm(true) }} className={`${btn} bg-[#37322f] text-white hover:bg-[#4b453f]`}>
             + Register Asset
           </button>
         </RoleGuard>
@@ -110,8 +110,8 @@ export default function Assets() {
           onClose={() => setShowForm(false)}
           footer={
             <>
-              <button onClick={() => setShowForm(false)} className={`${btn} border border-slate-300 text-slate-600`}>Cancel</button>
-              <button onClick={save} className={`${btn} bg-indigo-600 text-white`}>Register</button>
+              <button onClick={() => setShowForm(false)} className={`${btn} border border-[#e0dedb] text-[#605a57]`}>Cancel</button>
+              <button onClick={save} className={`${btn} bg-[#37322f] text-white`}>Register</button>
             </>
           }
         >
@@ -135,7 +135,7 @@ export default function Assets() {
             <Field label="Location"><input className={input} value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} /></Field>
             <Field label="Photo URL (optional)"><input className={input} value={form.photoUrl} onChange={(e) => setForm({ ...form, photoUrl: e.target.value })} /></Field>
           </div>
-          <label className="mt-3 flex items-center gap-2 text-sm text-slate-600">
+          <label className="mt-3 flex items-center gap-2 text-sm text-[#605a57]">
             <input type="checkbox" checked={form.isBookable} onChange={(e) => setForm({ ...form, isBookable: e.target.checked })} />
             Shared / bookable resource
           </label>
@@ -171,23 +171,23 @@ export default function Assets() {
 function Field({ label, children }) {
   return (
     <div>
-      <label className="text-xs font-medium text-slate-500">{label}</label>
+      <label className="text-xs font-medium text-[#847d76]">{label}</label>
       <div className="mt-1">{children}</div>
     </div>
   )
 }
 function Info({ label, value }) {
-  return <div><span className="text-slate-400">{label}: </span><span className="text-slate-700">{value || '—'}</span></div>
+  return <div><span className="text-[#a39c94]">{label}: </span><span className="text-[#4b453f]">{value || '—'}</span></div>
 }
 function History({ title, items, render }) {
   return (
     <div className="mt-4">
-      <h4 className="mb-2 text-sm font-semibold text-slate-700">{title}</h4>
+      <h4 className="mb-2 text-sm font-semibold text-[#4b453f]">{title}</h4>
       {(!items || items.length === 0) ? (
-        <p className="text-xs text-slate-400">None yet.</p>
+        <p className="text-xs text-[#a39c94]">None yet.</p>
       ) : (
-        <ul className="space-y-1 text-xs text-slate-600">
-          {items.map((it) => <li key={it.id} className="rounded bg-slate-50 px-2 py-1.5">{render(it)}</li>)}
+        <ul className="space-y-1 text-xs text-[#605a57]">
+          {items.map((it) => <li key={it.id} className="rounded bg-[#fbfaf9] px-2 py-1.5">{render(it)}</li>)}
         </ul>
       )}
     </div>

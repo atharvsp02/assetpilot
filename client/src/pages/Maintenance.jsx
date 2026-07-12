@@ -5,14 +5,14 @@ import RoleGuard from '../components/RoleGuard.jsx'
 import * as mApi from '../api/maintenance.js'
 import { listAssets } from '../api/assets.js'
 
-const input = 'w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500'
+const input = 'w-full rounded-md border border-[#e0dedb] px-3 py-2 text-sm focus:border-[#37322f] focus:outline-none focus:ring-1 focus:ring-[#37322f]'
 const btn = 'rounded-md px-3 py-1 text-xs font-medium'
 const fmt = (d) => new Date(d).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })
 
 // valid next actions per status — mirrors the server-side state machine
 const NEXT = {
   PENDING: [['APPROVED', 'Approve', 'bg-green-600'], ['REJECTED', 'Reject', 'bg-red-600']],
-  APPROVED: [['TECH_ASSIGNED', 'Assign technician', 'bg-indigo-600']],
+  APPROVED: [['TECH_ASSIGNED', 'Assign technician', 'bg-[#37322f]']],
   TECH_ASSIGNED: [['IN_PROGRESS', 'Start work', 'bg-blue-600']],
   IN_PROGRESS: [['RESOLVED', 'Mark resolved', 'bg-green-600']],
   REJECTED: [],
@@ -61,7 +61,7 @@ export default function Maintenance() {
           {(NEXT[r.status] || []).map(([to, label, color]) => (
             <button key={to} onClick={() => act(r.id, to)} className={`${btn} ${color} text-white`}>{label}</button>
           ))}
-          {(NEXT[r.status] || []).length === 0 && <span className="text-xs text-slate-400">—</span>}
+          {(NEXT[r.status] || []).length === 0 && <span className="text-xs text-[#a39c94]">—</span>}
         </div>
       </RoleGuard>
     ) },
@@ -69,11 +69,11 @@ export default function Maintenance() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-slate-800">Maintenance</h1>
-      <p className="mt-1 text-sm text-slate-500">Approval chain: Pending → Approved → Tech Assigned → In Progress → Resolved. No stage-skipping.</p>
+      <h1 className="text-2xl font-bold text-[#37322f]">Maintenance</h1>
+      <p className="mt-1 text-sm text-[#847d76]">Approval chain: Pending → Approved → Tech Assigned → In Progress → Resolved. No stage-skipping.</p>
 
-      <div className="mt-5 rounded-xl bg-white p-5 ring-1 ring-slate-200">
-        <h2 className="mb-3 font-semibold text-slate-800">Raise a request</h2>
+      <div className="mt-5 rounded-xl bg-white p-5 ring-1 ring-[#e6e3df]">
+        <h2 className="mb-3 font-semibold text-[#37322f]">Raise a request</h2>
         {msg && <div className="mb-3 rounded-md bg-green-50 px-3 py-2 text-sm text-green-700">{msg}</div>}
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
           <select className={input} value={form.assetId} onChange={(e) => setForm({ ...form, assetId: e.target.value })}>
@@ -87,12 +87,12 @@ export default function Maintenance() {
         </div>
         <div className="mt-3 flex gap-3">
           <input className={input} placeholder="Photo URL (optional)" value={form.photoUrl} onChange={(e) => setForm({ ...form, photoUrl: e.target.value })} />
-          <button onClick={raise} className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">Submit</button>
+          <button onClick={raise} className="rounded-md bg-[#37322f] px-4 py-2 text-sm font-medium text-white hover:bg-[#4b453f]">Submit</button>
         </div>
       </div>
 
       <div className="mt-6">
-        <h2 className="mb-2 font-semibold text-slate-800">Approval queue</h2>
+        <h2 className="mb-2 font-semibold text-[#37322f]">Approval queue</h2>
         <DataTable columns={columns} rows={requests} empty="No maintenance requests." />
       </div>
     </div>
