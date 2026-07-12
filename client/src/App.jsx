@@ -10,6 +10,7 @@ import OrgSetup from './pages/OrgSetup.jsx'
 import Assets from './pages/Assets.jsx'
 import Allocation from './pages/Allocation.jsx'
 import Booking from './pages/Booking.jsx'
+import Maintenance from './pages/Maintenance.jsx'
 
 function Placeholder({ title }) {
   return (
@@ -39,7 +40,7 @@ export default function App() {
             <Route path="/assets" element={<Assets />} />
             <Route path="/allocation" element={<Allocation />} />
             <Route path="/booking" element={<Booking />} />
-            <Route path="/maintenance" element={<Placeholder title="Maintenance" />} />
+            <Route path="/maintenance" element={<Maintenance />} />
             <Route path="/audit" element={<Placeholder title="Audit" />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
