@@ -32,8 +32,9 @@ router.post('/', requireAuth, validate(bookingSchema), async (req, res, next) =>
 
 router.patch('/:id/cancel', requireAuth, async (req, res, next) => {
   try {
-    res.json(await svc.cancelBooking(req.params.id, req.user.userId))
+    res.json(await svc.cancelBooking(req.params.id, req.user))
   } catch (e) {
+    if (e.status) return res.status(e.status).json({ code: e.code, message: e.message })
     next(e)
   }
 })

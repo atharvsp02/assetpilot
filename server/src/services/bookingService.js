@@ -39,10 +39,14 @@ export const listBookings = async ({ assetId }) => {
   })
 }
 
-export const cancelBooking = async (id, userId) => {
+export const cancelBooking = async (id, actor) => {
   const booking = await prisma.booking.findUnique({ where: { id } })
   if (!booking) throw httpError(404, 'NOT_FOUND', 'Booking not found')
+  // Only the booker, or an Asset Manager / Admin, may cancel a booking.
+  const privileged = actor.role === 'ASSET_MANAGER' || actor.role === 'ADMIN'
+  if (booking.bookedById !== actor.userId && !privileged)
+    throw httpError(403, 'FORBIDDEN', 'You cannot cancel another user’s booking')
   const updated = await prisma.booking.update({ where: { id }, data: { status: 'CANCELLED' } })
-  await notify(null, { userId, type: 'BOOKING_CANCELLED', message: `Booking cancelled — ${id}` })
+  await notify(null, { userId: actor.userId, type: 'BOOKING_CANCELLED', message: `Booking cancelled — ${id}` })
   return updated
 }
