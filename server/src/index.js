@@ -5,6 +5,7 @@ import authRouter from './routes/auth.js'
 import departmentsRouter from './routes/departments.js'
 import categoriesRouter from './routes/categories.js'
 import employeesRouter from './routes/employees.js'
+import assetsRouter from './routes/assets.js'
 
 const app = express()
 
@@ -18,6 +19,7 @@ app.use('/auth', authRouter)
 app.use('/departments', departmentsRouter)
 app.use('/categories', categoriesRouter)
 app.use('/employees', employeesRouter)
+app.use('/assets', assetsRouter)
 
 // Central error handler (last).
 app.use((err, req, res, next) => {
