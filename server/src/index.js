@@ -7,6 +7,7 @@ import categoriesRouter from './routes/categories.js'
 import employeesRouter from './routes/employees.js'
 import assetsRouter from './routes/assets.js'
 import allocationsRouter from './routes/allocations.js'
+import bookingsRouter from './routes/bookings.js'
 
 const app = express()
 
@@ -22,6 +23,7 @@ app.use('/categories', categoriesRouter)
 app.use('/employees', employeesRouter)
 app.use('/assets', assetsRouter)
 app.use('/allocations', allocationsRouter)
+app.use('/bookings', bookingsRouter)
 
 // Central error handler (last).
 app.use((err, req, res, next) => {
