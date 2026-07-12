@@ -8,6 +8,7 @@ import employeesRouter from './routes/employees.js'
 import assetsRouter from './routes/assets.js'
 import allocationsRouter from './routes/allocations.js'
 import bookingsRouter from './routes/bookings.js'
+import maintenanceRouter from './routes/maintenance.js'
 
 const app = express()
 
@@ -24,6 +25,7 @@ app.use('/employees', employeesRouter)
 app.use('/assets', assetsRouter)
 app.use('/allocations', allocationsRouter)
 app.use('/bookings', bookingsRouter)
+app.use('/maintenance', maintenanceRouter)
 
 // Central error handler (last).
 app.use((err, req, res, next) => {
