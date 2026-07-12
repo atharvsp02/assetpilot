@@ -7,6 +7,7 @@ import Login from './pages/Login.jsx'
 import Signup from './pages/Signup.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import OrgSetup from './pages/OrgSetup.jsx'
+import Assets from './pages/Assets.jsx'
 
 function Placeholder({ title }) {
   return (
@@ -33,7 +34,7 @@ export default function App() {
           >
             <Route path="/" element={<Dashboard />} />
             <Route path="/org" element={<RoleRoute roles={['ADMIN']}><OrgSetup /></RoleRoute>} />
-            <Route path="/assets" element={<Placeholder title="Assets" />} />
+            <Route path="/assets" element={<Assets />} />
             <Route path="/allocation" element={<Placeholder title="Allocation" />} />
             <Route path="/booking" element={<Placeholder title="Booking" />} />
             <Route path="/maintenance" element={<Placeholder title="Maintenance" />} />
