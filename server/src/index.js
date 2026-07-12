@@ -9,6 +9,7 @@ import assetsRouter from './routes/assets.js'
 import allocationsRouter from './routes/allocations.js'
 import bookingsRouter from './routes/bookings.js'
 import maintenanceRouter from './routes/maintenance.js'
+import auditsRouter from './routes/audits.js'
 
 const app = express()
 
@@ -26,6 +27,7 @@ app.use('/assets', assetsRouter)
 app.use('/allocations', allocationsRouter)
 app.use('/bookings', bookingsRouter)
 app.use('/maintenance', maintenanceRouter)
+app.use('/audits', auditsRouter)
 
 // Central error handler (last).
 app.use((err, req, res, next) => {
