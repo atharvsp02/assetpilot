@@ -2,6 +2,9 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import authRouter from './routes/auth.js'
+import departmentsRouter from './routes/departments.js'
+import categoriesRouter from './routes/categories.js'
+import employeesRouter from './routes/employees.js'
 
 const app = express()
 
@@ -12,6 +15,9 @@ app.get('/health', (req, res) => res.json({ ok: true }))
 
 // Routers are mounted here as each feature slice lands.
 app.use('/auth', authRouter)
+app.use('/departments', departmentsRouter)
+app.use('/categories', categoriesRouter)
+app.use('/employees', employeesRouter)
 
 // Central error handler (last).
 app.use((err, req, res, next) => {
