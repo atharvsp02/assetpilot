@@ -64,10 +64,61 @@ export default function Landing() {
           <p className="mt-4 text-xs text-[#a39c94]">Demo admin — admin@assetflow.com / Admin@123</p>
         </div>
 
-        {/* Dashboard preview */}
+        {/* Dashboard preview — real markup, mirrors the in-app dashboard */}
         <div id="how" className="mx-auto max-w-5xl px-6 pb-20">
           <div className="overflow-hidden rounded-2xl border border-[#e0dedb] bg-white shadow-[0_30px_80px_-30px_rgba(55,50,47,0.35)]">
-            <img src="/dashboard-preview.png" alt="AssetFlow dashboard preview" className="w-full" />
+            {/* Window chrome */}
+            <div className="flex items-center gap-2 border-b border-[#eeece9] bg-[#faf9f7] px-4 py-3">
+              <span className="h-3 w-3 rounded-full bg-[#e2564d]" />
+              <span className="h-3 w-3 rounded-full bg-[#e6b34a]" />
+              <span className="h-3 w-3 rounded-full bg-[#5aa563]" />
+              <span className="ml-3 text-xs font-medium text-[#a39c94]">AssetFlow — Dashboard</span>
+            </div>
+
+            <div className="flex">
+              {/* Sidebar */}
+              <aside className="hidden w-48 shrink-0 border-r border-[#eeece9] bg-[#faf9f7] p-4 sm:block">
+                <div className="flex items-center gap-2">
+                  <span className="grid h-6 w-6 place-items-center rounded bg-[#37322f] text-xs font-bold text-white">A</span>
+                  <span className="text-sm font-semibold">AssetFlow</span>
+                </div>
+                <nav className="mt-5 space-y-1 text-sm">
+                  <span className="block rounded-md bg-[#37322f] px-3 py-1.5 font-medium text-white">Dashboard</span>
+                  {['Assets', 'Allocation', 'Booking', 'Maintenance', 'Audit'].map((n) => (
+                    <span key={n} className="block rounded-md px-3 py-1.5 text-[#605a57]">{n}</span>
+                  ))}
+                </nav>
+              </aside>
+
+              {/* Main */}
+              <div className="flex-1 p-5 text-left">
+                <h3 className="text-lg font-bold text-[#37322f]">Dashboard</h3>
+                <p className="text-xs text-[#847d76]">Live snapshot of your organization’s assets and activity.</p>
+
+                <div className="mt-4 grid grid-cols-3 gap-3">
+                  {[
+                    { label: 'Assets Available', value: '128', accent: 'text-green-600' },
+                    { label: 'Assets Allocated', value: '74', accent: 'text-blue-600' },
+                    { label: 'Maintenance Today', value: '3', accent: 'text-orange-600' },
+                    { label: 'Active Bookings', value: '12', accent: 'text-[#37322f]' },
+                    { label: 'Pending Transfers', value: '2', accent: 'text-amber-600' },
+                    { label: 'Upcoming Returns', value: '5', accent: 'text-[#37322f]' },
+                  ].map((k) => (
+                    <div key={k.label} className="rounded-lg bg-[#fbfaf9] p-3 ring-1 ring-[#e6e3df]">
+                      <div className="text-[10px] font-medium uppercase tracking-wide text-[#a39c94]">{k.label}</div>
+                      <div className={`mt-1 text-2xl font-bold ${k.accent}`}>{k.value}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-3 rounded-lg border border-red-200 bg-red-50 p-3">
+                  <div className="text-xs font-semibold text-red-800">⚠ Overdue Returns (2)</div>
+                  <div className="mt-1 text-[11px] text-red-700">
+                    <span className="font-mono">AF-0114</span> ThinkPad X1 — held by Priya · due 07/09
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <p className="mt-3 text-center text-xs text-[#a39c94]">Preview — the live dashboard updates from real data.</p>
         </div>
