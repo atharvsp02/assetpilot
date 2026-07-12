@@ -1,0 +1,218 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  EMPLOYEE
+  DEPARTMENT_HEAD
+  ASSET_MANAGER
+  ADMIN
+}
+
+enum AssetStatus {
+  AVAILABLE
+  ALLOCATED
+  RESERVED
+  UNDER_MAINTENANCE
+  LOST
+  RETIRED
+  DISPOSED
+}
+
+enum AllocationStatus {
+  ACTIVE
+  RETURNED
+  TRANSFER_REQUESTED
+  TRANSFER_APPROVED
+}
+
+enum BookingStatus {
+  UPCOMING
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
+enum MaintenanceStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  TECH_ASSIGNED
+  IN_PROGRESS
+  RESOLVED
+}
+
+enum AuditCycleStatus {
+  OPEN
+  CLOSED
+}
+
+enum AuditItemStatus {
+  PENDING
+  VERIFIED
+  MISSING
+  DAMAGED
+}
+
+model User {
+  id             String       @id @default(cuid())
+  name           String
+  email          String       @unique
+  passwordHash   String
+  role           Role         @default(EMPLOYEE)
+  status         String       @default("Active")
+  department     Department?  @relation("DeptMembers", fields: [departmentId], references: [id])
+  departmentId   String?
+  createdAt      DateTime     @default(now())
+  headOf         Department[] @relation("DeptHead")
+  allocations    Allocation[] @relation("AllocatedTo")
+  bookings       Booking[]
+  raisedRequests MaintenanceRequest[]
+  notifications  Notification[]
+}
+
+model Department {
+  id       String       @id @default(cuid())
+  name     String
+  head     User?        @relation("DeptHead", fields: [headId], references: [id])
+  headId   String?
+  parent   Department?  @relation("DeptTree", fields: [parentId], references: [id])
+  parentId String?
+  children Department[] @relation("DeptTree")
+  status   String       @default("Active")
+  members  User[]       @relation("DeptMembers")
+  assets   Asset[]
+}
+
+model Category {
+  id             String  @id @default(cuid())
+  name           String
+  warrantyMonths Int?
+  status         String  @default("Active")
+  assets         Asset[]
+}
+
+model Asset {
+  id              String               @id @default(cuid())
+  tag             String               @unique
+  name            String
+  category        Category             @relation(fields: [categoryId], references: [id])
+  categoryId      String
+  serialNumber    String?
+  acquisitionDate DateTime?
+  acquisitionCost Float?
+  condition       String?
+  location        String?
+  photoUrl        String?
+  isBookable      Boolean              @default(false)
+  status          AssetStatus          @default(AVAILABLE)
+  department      Department?          @relation(fields: [departmentId], references: [id])
+  departmentId    String?
+  createdAt       DateTime             @default(now())
+  allocations     Allocation[]
+  bookings        Booking[]
+  maintenance     MaintenanceRequest[]
+  auditItems      AuditItem[]
+
+  @@index([status])
+  @@index([departmentId])
+}
+
+model Allocation {
+  id                 String           @id @default(cuid())
+  asset              Asset            @relation(fields: [assetId], references: [id])
+  assetId            String
+  user               User?            @relation("AllocatedTo", fields: [userId], references: [id])
+  userId             String?
+  departmentId       String?
+  allocatedById      String
+  expectedReturnDate DateTime?
+  status             AllocationStatus @default(ACTIVE)
+  checkInNotes       String?
+  createdAt          DateTime         @default(now())
+  returnedAt         DateTime?
+
+  @@index([assetId, status])
+}
+
+model Booking {
+  id         String        @id @default(cuid())
+  asset      Asset         @relation(fields: [assetId], references: [id])
+  assetId    String
+  bookedBy   User          @relation(fields: [bookedById], references: [id])
+  bookedById String
+  startTime  DateTime
+  endTime    DateTime
+  status     BookingStatus @default(UPCOMING)
+  createdAt  DateTime      @default(now())
+
+  @@index([assetId, startTime])
+}
+
+model MaintenanceRequest {
+  id             String            @id @default(cuid())
+  asset          Asset             @relation(fields: [assetId], references: [id])
+  assetId        String
+  raisedBy       User              @relation(fields: [raisedById], references: [id])
+  raisedById     String
+  description    String
+  priority       String            @default("Medium")
+  photoUrl       String?
+  status         MaintenanceStatus @default(PENDING)
+  approvedById   String?
+  technicianName String?
+  createdAt      DateTime          @default(now())
+  resolvedAt     DateTime?
+
+  @@index([status])
+}
+
+model AuditCycle {
+  id                String           @id @default(cuid())
+  name              String
+  scopeDepartmentId String?
+  scopeLocation     String?
+  startDate         DateTime
+  endDate           DateTime
+  status            AuditCycleStatus @default(OPEN)
+  createdById       String
+  items             AuditItem[]
+}
+
+model AuditItem {
+  id        String          @id @default(cuid())
+  cycle     AuditCycle      @relation(fields: [cycleId], references: [id])
+  cycleId   String
+  asset     Asset           @relation(fields: [assetId], references: [id])
+  assetId   String
+  auditorId String?
+  status    AuditItemStatus @default(PENDING)
+  note      String?
+
+  @@index([cycleId])
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  actorId   String
+  action    String
+  entity    String
+  entityId  String
+  detail    Json?
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  type      String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
