@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
+import { bootstrapAdmin } from './lib/bootstrapAdmin.js'
 import authRouter from './routes/auth.js'
 import departmentsRouter from './routes/departments.js'
 import categoriesRouter from './routes/categories.js'
@@ -43,4 +44,7 @@ app.use((err, req, res, next) => {
 })
 
 const PORT = process.env.PORT || 4000
-app.listen(PORT, () => console.log(`AssetFlow API on :${PORT}`))
+app.listen(PORT, async () => {
+  await bootstrapAdmin()
+  console.log(`AssetFlow API on :${PORT}`)
+})
